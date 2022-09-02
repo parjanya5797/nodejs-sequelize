@@ -18,4 +18,5 @@ module.exports = (sequelize,DataTypes) => {
         updatedAt : 'updated_at', //renames the updatedAt Column to updated_at
         // engine: 'MYISAM', //Postgres Does not use engines so works only on MySQL
     });
+    return Users;
 }

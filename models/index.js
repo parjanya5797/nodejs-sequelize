@@ -1,8 +1,10 @@
 const {Sequelize,DataTypes} = require('sequelize');
 
+//logging false hides all the internal query
 const sequelize = new Sequelize('node-express-sequelize','postgres','123456789',{
     host:'localhost',
     dialect:"postgres",
+    logging:true,
     pool:{max:5,min:0,idle:10000}
 });
 
