@@ -3,7 +3,7 @@ var db = require('../models');
 
 const Users = db.users;
 
-const {Sequelize} = require('sequelize')
+const {Sequelize,Op} = require('sequelize')
 
 var addUser = async (req,res) => {
     // Method 1: To Create Row
@@ -117,15 +117,28 @@ var queryData = async (req,res) =>{
 
     //include or exclude
     //exclude returns other columns except the ones added 
-    let data = await Users.findAll({
-        attributes: {
-            exclude:['created_at'],
-            include:[
-                [Sequelize.fn('CONCAT',Sequelize.col('name'),' Singh'),'full_name']
-            ]
-        },
+    // let data = await Users.findAll({
+    //     attributes: {
+    //         exclude:['created_at'],
+    //         include:[
+    //             [Sequelize.fn('CONCAT',Sequelize.col('name'),' Singh'),'full_name']
+    //         ]
+    //     },
         
-    });
+    // });
+
+    //Conditional Operators
+    let data = await Users.findAll({
+        where:{
+            // id:20
+            id:{
+                [Op.eq]:20
+            },
+            email:{
+                [Op.like]:"first@first.com"
+            }
+        }
+    })
 
     let response = {
         data:data,
