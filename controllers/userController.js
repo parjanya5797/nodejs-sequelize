@@ -154,6 +154,15 @@ var queryData = async (req,res) =>{
     //     // offset:2 //Skips 2 records
     // })
 
+
+    //Count with conditions
+    let data = await Users.count({
+        where:{
+            id:{
+                [Op.eq]:20 
+            }
+        }
+    });
     let response = {
         data:data,
     }
