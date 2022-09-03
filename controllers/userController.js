@@ -3,6 +3,8 @@ var db = require('../models');
 
 const Users = db.users;
 
+const {Sequelize} = require('sequelize')
+
 var addUser = async (req,res) => {
     // Method 1: To Create Row
     // let data = await Users.build({name:"Tes11t",email:'test1@test.com'});
@@ -73,16 +75,16 @@ var crudOperation = async (req,res) => {
     //         email:"third@third.com",
     //     }
     // ]);
-
-
+    
+    
     //find All
     // let data = await Users.findAll({});
-
+    
     //findOne
     let data = await Users.findOne({where:{
         id:22
     }});
-
+    
     
     let response = {
         data: {...data},
@@ -90,6 +92,47 @@ var crudOperation = async (req,res) => {
     res.status(200).json(response);
 }
 
+var queryData = async (req,res) =>{
+    //fields prevents other data except the one in array to be inserted into the DB
+    // data = await Users.create({name:"Form Query Data111",email:"query@admin.com",gender:"Male"},{
+    //     fields:['email','gender']
+    // });
+    
+    //Select 
+    //Select only selected fields in the attributes key
+    //If you want to rename the field name then make another array that consists of the original name and the new name
+    //group is used for groupBy
+
+    // let data = await Users.findAll({
+    //     attributes:[
+    //         'name',
+    //         ['email','emailID'],
+    //         'gender',
+    //         // [Sequelize.fn('COUNT',Sequelize.col('email')),'emailCount'], // Count emails
+    //         [Sequelize.fn('CONCAT',Sequelize.col('name'),' test'),'nameConcat'], // Concat name
+            
+    //     ],
+    //     group: ['name', 'email', 'gender']
+    // });
+
+    //include or exclude
+    //exclude returns other columns except the ones added 
+    let data = await Users.findAll({
+        attributes: {
+            exclude:['created_at'],
+            include:[
+                [Sequelize.fn('CONCAT',Sequelize.col('name'),' Singh'),'full_name']
+            ]
+        },
+        
+    });
+
+    let response = {
+        data:data,
+    }
+    res.status(200).json(response)
+}
+
 module.exports = {
-    addUser,crudOperation,
+    addUser,crudOperation,queryData
 }
