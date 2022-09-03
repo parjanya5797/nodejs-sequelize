@@ -128,17 +128,31 @@ var queryData = async (req,res) =>{
     // });
 
     //Conditional Operators
-    let data = await Users.findAll({
-        where:{
-            // id:20
-            id:{
-                [Op.eq]:20
-            },
-            email:{
-                [Op.like]:"first@first.com"
-            }
-        }
-    })
+    // let data = await Users.findAll({
+    //     where:{
+    //         // id:20
+    //         id:{
+    //             [Op.eq]:20
+    //         },
+    //         email:{
+    //             [Op.like]:"first@first.com"
+    //         }
+    //     }
+    // })
+
+    //Order Group BY
+    // let data = await Users.findAll({
+    //     attributes:{
+    //         exclude:['created_at','updated_at'],
+    //     },
+    //     order:[
+    //         ['name','DESC'],
+    //         ['email','ASC'],
+    //     ],
+    //     group:['email','name','gender','id'],
+    //     // limit:2, //shows only 2 records
+    //     // offset:2 //Skips 2 records
+    // })
 
     let response = {
         data:data,
