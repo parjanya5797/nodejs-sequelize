@@ -3,7 +3,8 @@ var db = require('../models');
 
 const Users = db.users;
 
-const {Sequelize,Op} = require('sequelize')
+const {Sequelize,Op} = require('sequelize');
+const { create } = require('lodash');
 
 var addUser = async (req,res) => {
     // Method 1: To Create Row
@@ -102,7 +103,7 @@ var queryData = async (req,res) =>{
     //Select only selected fields in the attributes key
     //If you want to rename the field name then make another array that consists of the original name and the new name
     //group is used for groupBy
-
+    
     // let data = await Users.findAll({
     //     attributes:[
     //         'name',
@@ -110,11 +111,11 @@ var queryData = async (req,res) =>{
     //         'gender',
     //         // [Sequelize.fn('COUNT',Sequelize.col('email')),'emailCount'], // Count emails
     //         [Sequelize.fn('CONCAT',Sequelize.col('name'),' test'),'nameConcat'], // Concat name
-            
+    
     //     ],
     //     group: ['name', 'email', 'gender']
     // });
-
+    
     //include or exclude
     //exclude returns other columns except the ones added 
     // let data = await Users.findAll({
@@ -124,9 +125,9 @@ var queryData = async (req,res) =>{
     //             [Sequelize.fn('CONCAT',Sequelize.col('name'),' Singh'),'full_name']
     //         ]
     //     },
-        
+    
     // });
-
+    
     //Conditional Operators
     // let data = await Users.findAll({
     //     where:{
@@ -139,7 +140,7 @@ var queryData = async (req,res) =>{
     //         }
     //     }
     // })
-
+    
     //Order Group BY
     // let data = await Users.findAll({
     //     attributes:{
@@ -153,8 +154,8 @@ var queryData = async (req,res) =>{
     //     // limit:2, //shows only 2 records
     //     // offset:2 //Skips 2 records
     // })
-
-
+    
+    
     //Count with conditions
     let data = await Users.count({
         where:{
@@ -169,6 +170,37 @@ var queryData = async (req,res) =>{
     res.status(200).json(response)
 }
 
+let filterData = async (req,res) => {
+    
+    // let data = await Users.findAll({});     //get all data
+    
+    // let data = await Users.findOne({});     //get latest one data
+    
+    // let data = await Users.findByPk(21)      //get one by PK
+    
+    // let data = await Users.findAndCountAll({      //list and count all the records
+    //     where: {
+    //         email:{
+    //             [Op.like]:'%admin%'
+    //         }
+    //     }
+    // })
+    
+    let [data,created] = await Users.findOrCreate({   //finds the row matching the conditions or creates a new record
+        where:{name:'dummy1111sssss'},
+        defaults:{
+            email:"findOrCreate@mail.com",
+            gender:"male"
+        }
+    })                 //returns data with the data and created boolean value
+    
+    let response = {
+        data:data,
+        // add:created,
+    }
+    res.status(200).json(response);
+}
+
 module.exports = {
-    addUser,crudOperation,queryData
+    addUser,crudOperation,queryData,filterData
 }
