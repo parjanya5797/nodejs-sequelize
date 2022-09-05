@@ -201,6 +201,18 @@ let filterData = async (req,res) => {
     res.status(200).json(response);
 }
 
+let setterGetter = async (req,res) => {
+    //setter is used to set data before inserting it to the DB.It is defined in the respective model 
+    // let data = await Users.create({name:"Setter",email:"setter@mail.com",gender:"male"})
+
+    let data = await Users.findByPk(22);
+    let response = {
+        data: "setter-getter",
+        info: data
+    }
+    res.status(200).json(response);
+}
+
 module.exports = {
-    addUser,crudOperation,queryData,filterData
+    addUser,crudOperation,queryData,filterData,setterGetter
 }

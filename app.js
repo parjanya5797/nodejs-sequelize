@@ -12,6 +12,7 @@ app.get("/add",userController.addUser);
 app.get("/crud",userController.crudOperation);
 app.get('/query',userController.queryData);
 app.get('/filter',userController.filterData);
+app.get('/setter-getter',userController.setterGetter);
 
 app.listen(port,() => {
     console.log(`App Running in port ${port}`);
