@@ -5,6 +5,7 @@ const Users = db.users;
 
 const {Sequelize,Op} = require('sequelize');
 const { create } = require('lodash');
+const e = require('express');
 
 var addUser = async (req,res) => {
     // Method 1: To Create Row
@@ -204,7 +205,7 @@ let filterData = async (req,res) => {
 let setterGetter = async (req,res) => {
     //setter is used to set data before inserting it to the DB.It is defined in the respective model 
     // let data = await Users.create({name:"Setter",email:"setter@mail.com",gender:"male"})
-
+    
     let data = await Users.findByPk(22);
     let response = {
         data: "setter-getter",
@@ -213,6 +214,41 @@ let setterGetter = async (req,res) => {
     res.status(200).json(response);
 }
 
+var validationCheck =async (req,res) => {
+    try {
+        let data = await Users.create({name:"Test",email:"dongaaaa@mail.com",gender:"malee"})
+    } catch (error) {
+        const messages = {};
+        error.errors.forEach((e) => {
+            let message;
+            //Use if need custom message
+            // switch (e.validatorKey) {
+            //     case 'not_unique':
+            //     message = "Duplicate Email"
+            //     break;
+            //     case 'isIn':
+            //         console.log(e.message);
+            //     message = "Gender Not in Male or Female"
+            //     break;
+            //     case 'equals':
+            //         console.log(e.message);
+            //     message = "Gender Not Male"
+            //     break;
+                
+            //     default:
+            //     break;
+            // }
+            message = error.message;
+            messages[e.path] = message;
+            console.log(messages);
+        })
+    }
+    let response = {
+        data:"me"
+    }
+    res.status(200).json({response});
+}
+
 module.exports = {
-    addUser,crudOperation,queryData,filterData,setterGetter
+    addUser,crudOperation,queryData,filterData,setterGetter,validationCheck
 }

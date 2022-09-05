@@ -5,26 +5,39 @@ module.exports = (sequelize,DataTypes) => {
         // name:DataTypes.STRING,
         name:{
             type:DataTypes.STRING,
-            set(value) {
-                this.setDataValue('name',value+' Singh')
-            },
-            get(){
-                return this.getDataValue('name')+" XYZ " + this.email;
-            }
+            // set(value) {
+            //     this.setDataValue('name',value+' Singh')
+            // },
+            // get(){
+            //     return this.getDataValue('name')+" XYZ " + this.email;
+            // }
         },
         email:{
             type: DataTypes.STRING,
-            defaultValue: "admin@admin.com",
-            set(value){
-                this.setDataValue('email',value+' Data')
-            }
+            // defaultValue: "admin@admin.com",
+            unique:true,
+            allowNull:false,
+            // set(value){
+            //     this.setDataValue('email',value+' Data')
+            // }
 
         },
         gender:{
             type:DataTypes.STRING,
-            set(value){
-                this.setDataValue('gender',value+ 'asdsad')
+            validate:{
+                // equals:'male',     // must be male validation
+                // equals:{
+                //     args:'male',
+                //     msg:"Please Enter Only Male"
+                // },
+                isIn:{
+                    args:[['male','female']],
+                    msg:"Must be either Male or Female"
+                } // must be either male or female
             }
+            // set(value){
+            //     this.setDataValue('gender',value+ 'asdsad')
+            // }
         }
     },{
         tableName: "users", //change table name ourselves
