@@ -3,7 +3,7 @@ var db = require('../models');
 
 const Users = db.users;
 
-const {Sequelize,Op} = require('sequelize');
+const {Sequelize,Op,QueryTypes} = require('sequelize');
 const { create } = require('lodash');
 const e = require('express');
 
@@ -234,7 +234,7 @@ var validationCheck =async (req,res) => {
             //         console.log(e.message);
             //     message = "Gender Not Male"
             //     break;
-                
+            
             //     default:
             //     break;
             // }
@@ -249,6 +249,35 @@ var validationCheck =async (req,res) => {
     res.status(200).json({response});
 }
 
+let rawQuery = async (req,res) => {
+    
+    
+    //import QueryTypes from Sequelize
+    const users = await db.sequelize.query("SELECT * FROM users WHERE gender = $gender ",{
+        type:QueryTypes.SELECT, 
+        model:Users,
+        mapToModel:true,
+        raw:true,
+        // replacements:{gender:'male'}, //method 1      
+        //In method 1 the query param must be started with  :paramName eg: gender= :gender
+        
+        // replacements:['male'], //method 2 
+        //In method 2 the query param should be in specific index in an array and in query noted by a ? alphabet
+        // eg: gender= ?
+        // replacements: {
+        //     gender:['male','female'] 
+        // },   //gender IN (:gender)
+        // replacements:{searchEmail:'%@mail.com'},  // email LIKE :searchEmail
+        bind:{gender:"male"}    //method 3 gender = $gender 
+
+    });
+    let response = {
+        data: "Raw Query:",
+        record:users,
+    }
+    res.status(200).json(response);
+}
+
 module.exports = {
-    addUser,crudOperation,queryData,filterData,setterGetter,validationCheck
+    addUser,crudOperation,queryData,filterData,setterGetter,validationCheck,rawQuery
 }

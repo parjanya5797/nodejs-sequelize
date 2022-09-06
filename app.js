@@ -14,6 +14,7 @@ app.get('/query',userController.queryData);
 app.get('/filter',userController.filterData);
 app.get('/setter-getter',userController.setterGetter);
 app.get('/validation',userController.validationCheck);
+app.get('/raw-query',userController.rawQuery);
 
 app.listen(port,() => {
     console.log(`App Running in port ${port}`);
