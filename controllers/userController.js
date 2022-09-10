@@ -2,6 +2,7 @@ const { users } = require('../models');
 var db = require('../models');
 
 const Users = db.users;
+const Posts = db.posts;
 
 const {Sequelize,Op,QueryTypes} = require('sequelize');
 const { create } = require('lodash');
@@ -278,6 +279,20 @@ let rawQuery = async (req,res) => {
     res.status(200).json(response);
 }
 
+let oneToOne = async (req,res) => {
+    
+    let data = await Users.findAll({
+        where:{id:1},
+        include:Posts,
+
+    });
+
+    const response = {
+        data:data
+    }
+    res.status(200).json(response);
+}
+
 module.exports = {
-    addUser,crudOperation,queryData,filterData,setterGetter,validationCheck,rawQuery
+    addUser,crudOperation,queryData,filterData,setterGetter,validationCheck,rawQuery,oneToOne
 }
