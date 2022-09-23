@@ -31,8 +31,10 @@ db.sequelize.sync({force:false,match:/node-express-sequelize$/})
     console.log("Yes Re Synced");
 })
 
-db.users.hasOne(db.posts,{foreignKey:'user_id'}); //default userId
+// db.users.hasOne(db.posts,{foreignKey:'user_id',as:'PostInfo'}); //default userId
+db.users.hasMany(db.posts,{foreignKey:'user_id',as:'postDetail'}); //default userId
 
-db.posts.belongsTo(db.users,{foreignKey:'user_id'});
+
+db.posts.belongsTo(db.users,{foreignKey:'user_id',as:'UserInfo'});
 
 module.exports = db;

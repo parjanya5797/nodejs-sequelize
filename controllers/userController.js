@@ -283,7 +283,11 @@ let oneToOne = async (req,res) => {
     
     let data = await Users.findAll({
         where:{id:1},
-        include:Posts,
+        include:[{
+            model:Posts,
+            as:'PostInfo', 
+            attributes:['title',['name','PostName'],['content','PostContent']]
+        }],
 
     });
 
@@ -293,6 +297,18 @@ let oneToOne = async (req,res) => {
     res.status(200).json(response);
 }
 
+let oneToMany = async (req,res) => {
+    let data = await Users.findAll({
+        where:{id:1},
+        include: [{
+            model:Posts,
+            as:'postDetail',
+            attributes:['title',['name','PostName']]
+        }]
+    });
+    res.status(200).json(data);
+}
+
 module.exports = {
-    addUser,crudOperation,queryData,filterData,setterGetter,validationCheck,rawQuery,oneToOne
+    addUser,crudOperation,queryData,filterData,setterGetter,validationCheck,rawQuery,oneToOne,oneToMany
 }
